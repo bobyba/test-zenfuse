@@ -1,6 +1,4 @@
 import React, { useCallback } from 'react'
-import RangeInput from './components/rangeInput/index'
-import Switcher from './components/switcher/index'
 import { ReactComponent as ZefuIcon } from './assets/zefu.svg'
 import { ReactComponent as StarIcon } from './assets/star.svg'
 import { ReactComponent as CloseIcon } from './assets/close.svg'
