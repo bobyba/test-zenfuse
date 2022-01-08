@@ -14,6 +14,7 @@ function App() {
     inputZefu: null,
     zefuWallet: null,
     inputFiat: null,
+    inputCom: '',
     rateZefu: 0.005,
     statusAuth: false,
     errorAuthStatus: false,
@@ -87,7 +88,7 @@ function App() {
                 </div>
                 <div className='space-y-6'>
                   <div>
-                    <div className={`flex justify-end gap-1 text-xs font-medium text-gray-700 `}>
+                    <div className='flex justify-end gap-1 text-xs font-medium text-gray-700'>
                       <div>Balance</div>
                       <div>{state.zefuWallet || '0.00'}</div>
                       <div>ZEFU</div>
@@ -98,6 +99,8 @@ function App() {
                       </div>
                       <input
                         type='number'
+                        min='0'
+                        required
                         name='price'
                         value={state.inputZefu}
                         id='price'
@@ -128,6 +131,9 @@ function App() {
                       rows={3}
                       className={`p-3 block w-full border bg-gray-300 rounded-lg resize-none focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${disabledClass}`}
                       placeholder='Say something nice...'
+                      onChange={(e) => {
+                        setState({ inputCom: e.target.value })
+                      }}
                     />
                   </div>
 
@@ -141,7 +147,8 @@ function App() {
                     <button
                       type='button'
                       className={`${
-                        disabledClass && 'bg-gray-300 text-gray-400 border-none pointer-events-none'
+                        (!state.statusAuth || !state.inputZefu) &&
+                        'bg-gray-300 text-gray-400 border-none pointer-events-none'
                       } p-2 rounded-lg w-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 border`}
                       onClick={() => {
                         setState({ statusSuccessSend: true })
@@ -157,12 +164,15 @@ function App() {
         </div>
       ) : (
         <SuccessCard
+          data={{ zefu: state.inputZefu, fiat: state.inputFiat, message: state.inputCom }}
           onBack={() => {
             setState({
               statusSuccessSend: false,
               inputZefu: null,
               zefuWallet: null,
               inputFiat: null,
+              inputCom: '',
+              rateZefu: 0.005,
               statusAuth: false,
               errorAuthStatus: false,
               statusConnect: false
